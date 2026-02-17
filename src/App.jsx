@@ -7,7 +7,26 @@ import References from "./components/References";
 import CVPreview from "./components/CvPreview";
 import "./App.css";
 
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
+
 export default function App() {
+  // PDF download handler using jsPDF and html2canvas
+  async function handleDownloadPDF() {
+    const previewElement = document.querySelector('.cv-preview');
+    if (!previewElement) {
+      alert('CV preview not found!');
+      return;
+    }
+    const canvas = await html2canvas(previewElement);
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const imgWidth = pageWidth;
+    const imgHeight = (canvas.height * pageWidth) / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+    pdf.save('cv.pdf');
+  }
   const [step, setStep] = useState(1);
 
   const [cvData, setCvData] = useState({
@@ -96,6 +115,12 @@ export default function App() {
             >
               Edit CV
             </button>
+              <button
+                className="bg-green-500 text-white px-6 py-2 rounded ml-4"
+                onClick={() => handleDownloadPDF()}
+              >
+                Download PDF
+              </button>
           </div>
         </div>
       )}

@@ -1,6 +1,6 @@
 export default function CVPreview({ cvData }) {
     return (
-        <main id="cv-preview" className="bg-white p-8 shadow-lg rounded-md">
+        <main id="cv-preview" className="cv-preview bg-white p-8 shadow-lg rounded-md">
 
             <section className="border-b-2 pb-4 text-center">
                 <h1 className="text-3xl font-bold">
